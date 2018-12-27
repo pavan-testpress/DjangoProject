@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'authenticationapp.apps.AuthenticationappConfig'
+    'authenticationapp.apps.AuthenticationappConfig',
+    'bootstrap4',
+    'crispy_forms'
 ]
 
 MIDDLEWARE = [
@@ -120,3 +122,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'authenticationapp.MyUser'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
