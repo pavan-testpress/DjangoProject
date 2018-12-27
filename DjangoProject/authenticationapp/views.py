@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate, login as mylogin, logout as mylogo
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+
 from .forms import UserCreationForm
 
 # Create your views here.
