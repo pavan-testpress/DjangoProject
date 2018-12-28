@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'authenticationapp.apps.AuthenticationappConfig',
+    'bookmarksapp.apps.BookmarksappConfig',
     'bootstrap4',
     'crispy_forms'
 ]
