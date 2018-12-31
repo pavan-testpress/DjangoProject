@@ -53,21 +53,21 @@ class BookmarksAppTestCase(TestCase):
         self.assertQuerysetEqual(response.context['folders'], folders, transform=lambda x: x, ordered=False)
 
     def testGetFolderListViewByName(self):
-        response = self.client.get(reverse('bookmarksapp:folders')+"?sort=name")
+        response = self.client.get(reverse('bookmarksapp:folders') + "?sort=name")
         tempuser = response.context['user']
         folders = Folders.objects.filter(created_by=tempuser)
         folders = folders.order_by('name')
         self.assertQuerysetEqual(response.context['folders'], folders, transform=lambda x: x)
 
     def testGetFolderListViewByCreatedDate(self):
-        response = self.client.get(reverse('bookmarksapp:folders')+"?sort=-created")
+        response = self.client.get(reverse('bookmarksapp:folders') + "?sort=-created")
         tempuser = response.context['user']
         folders = Folders.objects.filter(created_by=tempuser)
         folders = folders.order_by('-created')
         self.assertQuerysetEqual(response.context['folders'], folders, transform=lambda x: x)
 
     def testGetFolderListViewByModifiedDate(self):
-        response = self.client.get(reverse('bookmarksapp:folders')+"?sort=-modified")
+        response = self.client.get(reverse('bookmarksapp:folders') + "?sort=-modified")
         tempuser = response.context['user']
         folders = Folders.objects.filter(created_by=tempuser)
         folders = folders.order_by('-modified')
