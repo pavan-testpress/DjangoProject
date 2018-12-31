@@ -105,3 +105,14 @@ class BookmarksAppTestCase(TestCase):
         response = self.client.get(reverse('bookmarksapp:folders') + "?sort=-modisadasd")
         folders = Folders.objects.filter(created_by=self.user).order_by('name')
         self.assertQuerysetEqual(response.context['folders'], folders, transform=lambda x: x)
+
+    def testBookmarksListWithoutLogin(self):
+        self.client.get(reverse('authenticationapp:logout'))
+        response = self.client.get(reverse('bookmarksapp:bookmarks', kwargs={'slug': 'google'}))
+        self.assertRedirects(response, reverse('authenticationapp:login'))
+
+    def testGetBookmarksListView(self):
+        response = self.client.get(reverse('bookmarksapp:bookmarks', kwargs={'slug': 'google'}))
+        tempuser = response.context['user']
+        bookmarks = Folders.objects.get(slug='google', created_by=tempuser).folder.all()
+        self.assertQuerysetEqual(response.context['bookmarks'], bookmarks, transform=lambda x: x, ordered=False)
