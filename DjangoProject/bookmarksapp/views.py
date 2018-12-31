@@ -63,3 +63,29 @@ class BookmarksListView(ListView):
             return self.request.GET['sort']
         else:
             return None
+
+
+class BookmarksListView(ListView):
+    model = Folders
+    context_object_name = 'bookmarks'
+    template_name = 'bookmarksapp/bookmarkslist.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return super(BookmarksListView, self).dispatch(request, *args, **kwargs)
+        else:
+            return HttpResponseRedirect(reverse('authenticationapp:login'))
+
+    def get_queryset(self):
+        if 'sort' in self.request.GET:
+            self.queryset = Folders.objects.get(created_by=self.request.user, slug=self.kwargs['slug']).folder
+            qs = super(BookmarksListView, self).get_queryset()
+        else:
+            qs = Folders.objects.get(created_by=self.request.user, slug=self.kwargs['slug']).folder.all()
+        return qs
+
+    def get_ordering(self):
+        if 'sort' in self.request.GET:
+            return self.request.GET['sort']
+        else:
+            return None
