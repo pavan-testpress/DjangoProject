@@ -12,11 +12,11 @@ class AuthenticationTestCase(TestCase):
         }
         MyUser.objects.create_user(**self.credentials)
 
-    def testSignupPage(self):
+    def test_signup_page(self):
         response = self.client.get(reverse('authenticationapp:signup'))
         self.assertEqual(response.status_code, 200)
 
-    def testPostSignupPage(self):
+    def test_post_signup_page(self):
         data = {
             'email': "kumar@gmail.com",
             'password1': "pavankumar",
@@ -25,15 +25,15 @@ class AuthenticationTestCase(TestCase):
         response = self.client.post(reverse('authenticationapp:signup'), data)
         self.assertRedirects(response, reverse('authenticationapp:index'))
 
-    def testGetLoginPage(self):
+    def test_get_login_page(self):
         response = self.client.get(reverse('authenticationapp:login'))
         self.assertEqual(response.status_code, 200)
 
-    def testPostLoginPage(self):
+    def test_post_login_page(self):
         response = self.client.post(reverse('authenticationapp:login'), self.credentials)
         self.assertRedirects(response, reverse('authenticationapp:index'))
 
-    def testLogoutPage(self):
+    def test_logout_page(self):
         response = self.client.get(reverse('authenticationapp:logout'))
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, reverse('authenticationapp:login'))
