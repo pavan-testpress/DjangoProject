@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'authenticationapp.apps.AuthenticationappConfig',
     'bookmarksapp.apps.BookmarksappConfig',
     'bootstrap4',
-    'crispy_forms'
+    'crispy_forms',
+    'django_filters',
 ]
 
 MIDDLEWARE = [

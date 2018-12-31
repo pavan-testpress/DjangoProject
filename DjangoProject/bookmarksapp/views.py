@@ -23,6 +23,10 @@ class FolderListView(ListView):
 
     def get_ordering(self):
         if 'sort' in self.request.GET:
-            return self.request.GET['sort']
+            sort = self.request.GET['sort']
+            if sort not in ['-modified', '-created', 'name']:
+                sort = 'name'
+                return sort
+            return sort
         else:
             return None

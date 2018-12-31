@@ -36,7 +36,7 @@ nav a{
     font-size: 25px;
     text-decoration: none;
     transition: all;
-    transition-duration: 1s;
+    transition-duration: 0.3s;
 }
 .logout{
     display: flex;
@@ -75,7 +75,7 @@ aside>a{
     color: blue;
     text-align: center;
     transition-property: all;
-    transition-duration: 1s;
+    transition-duration: 0.3s;
 }
 aside>a:hover{
     background: #605F5E;
@@ -118,7 +118,7 @@ main >.folders >.folder{
     flex-wrap: wrap;
     flex-direction: column;
     transition: all ease;
-    transition-duration: 1s;
+    transition-duration: 0.3s;
 }
 main >.folders >.folder> .folder-content{
     display: flex;
