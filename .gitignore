@@ -1,7 +1,9 @@
 .vscode/*
 .idea/*
 **.pyc
-
+**.ttf
+webfonts/
+all.css
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
