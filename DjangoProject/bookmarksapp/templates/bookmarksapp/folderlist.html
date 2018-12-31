@@ -1,10 +1,16 @@
 {% extends 'bookmarksapp/base.html' %}
 {% load static %}
+{% block sidebar %}
+     <div class="title">sort by</div>
+     <a href="{% url 'bookmarksapp:folders' %}?sort=name">name</a>
+     <a href="{% url 'bookmarksapp:folders' %}?sort=-created">created</a>
+     <a href="{% url 'bookmarksapp:folders' %}?sort=-modified">modified</a>
+{% endblock %}
 {% block content %}
     <div class="folders">
         {% for folder in folders %}
             <div class="folder">
-                <a href="{{ folder.slug }}">
+                <a href="{{ folder.slug }}/">
                     <i class="fas fa-folder"></i>
                 </a>
                 <div class="folder-content">

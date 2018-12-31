@@ -2,7 +2,7 @@
     <head>
         {% load static %}
         <link rel="stylesheet" href="{% static 'bookmarksapp/main.css' %}">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+        <link rel="stylesheet" href="{% static 'bookmarksapp/all.css' %}">
     </head>
     <body>
          <div id="container">
@@ -14,10 +14,9 @@
                 </div>
             </nav>
              <aside>
-                 <div class="title">sort by</div>
-                 <a href="{% url 'bookmarksapp:folders' %}?sort=name">name</a>
-                 <a href="{% url 'bookmarksapp:folders' %}?sort=-created">created</a>
-                 <a href="{% url 'bookmarksapp:folders' %}?sort=-modified">modified</a>
+                 {% block sidebar %}
+
+                 {% endblock %}
              </aside>
             <main>
                 {% block content %}
