@@ -16,7 +16,7 @@ class Folders(TimeStampedModel):
         super(Folders, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.name;
+        return self.name
 
 
 class Bookmarks(TimeStampedModel):
