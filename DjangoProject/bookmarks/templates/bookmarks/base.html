@@ -29,5 +29,16 @@
                 {% endblock %}
             </footer>
         </div>
+    <script>
+        plus =  document.getElementById('icon');
+        content = document.getElementById('create');
+        plus.addEventListener("click", function(){
+            content.innerHTML = `
+                <i class="fas fa-folder"></i>
+                <input type="text" id="text_field" name="name" form="form1">
+                <input type="submit" id="btn" form="form1">
+            `;
+        });
+    </script>
     </body>
 </html>

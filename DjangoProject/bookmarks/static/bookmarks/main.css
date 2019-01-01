@@ -140,6 +140,9 @@ main >.folders >.folder> .folder-content{
     background: #D0D1CF;
     box-shadow:0 0 25px 4px blue;
 }
+main>.folders>.folder>.folder-content>.name{
+    text-transform: capitalize;
+}
 main .folders .folder .folder-content .count{
     margin-left: auto;
 }
@@ -176,4 +179,3 @@ main >.bookmarks >.bookmark:hover >a{
     font-size: 1.3em;
     color: white;
 }
-
