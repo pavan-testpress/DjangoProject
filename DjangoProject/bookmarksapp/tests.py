@@ -106,13 +106,51 @@ class BookmarksAppTestCase(TestCase):
         folders = Folders.objects.filter(created_by=self.user).order_by('name')
         self.assertQuerysetEqual(response.context['folders'], folders, transform=lambda x: x)
 
-    def testBookmarksListWithoutLogin(self):
+    def test_bookmarks_list_without_login(self):
+        """
+        Test bookmark list without logged in.
+        """
         self.client.get(reverse('authenticationapp:logout'))
         response = self.client.get(reverse('bookmarksapp:bookmarks', kwargs={'slug': 'google'}))
         self.assertRedirects(response, reverse('authenticationapp:login'))
 
-    def testGetBookmarksListView(self):
+    def test_get_bookmarks_listView(self):
+        """
+        Get Bookmarks list view
+        """
         response = self.client.get(reverse('bookmarksapp:bookmarks', kwargs={'slug': 'google'}))
-        tempuser = response.context['user']
-        bookmarks = Folders.objects.get(slug='google', created_by=tempuser).folder.all()
+        bookmarks = Folders.objects.get(slug='google', created_by=self.user).folder.all()
         self.assertQuerysetEqual(response.context['bookmarks'], bookmarks, transform=lambda x: x, ordered=False)
+
+    def test_get_bookmark_list_view_by_name(self):
+        """
+        Test Sorting feature by name in bookmark list page.
+        """
+        response = self.client.get(reverse('bookmarksapp:bookmarks', kwargs={'slug': 'google'}) + "?sort=name")
+        bookmarks = Folders.objects.get(slug='google', created_by=self.user).folder.all().order_by('name')
+        self.assertQuerysetEqual(response.context['bookmarks'], bookmarks, transform=lambda x: x)
+
+    def test_get_bookmark_list_view_by_created_date(self):
+        """
+        Test sort by created date in bookmark list page.
+        """
+        response = self.client.get(reverse('bookmarksapp:bookmarks', kwargs={'slug': 'google'}) + "?sort=-created")
+        bookmarks = Folders.objects.get(slug='google', created_by=self.user).folder.all().order_by('-created')
+        self.assertQuerysetEqual(response.context['bookmarks'], bookmarks, transform=lambda x: x)
+
+    def test_get_bookmark_list_view_by_modified_date(self):
+        """
+        Test sort by modified date in bookmark list page.
+        """
+        response = self.client.get(reverse('bookmarksapp:bookmarks', kwargs={'slug': 'google'}) + "?sort=-modified")
+        bookmarks = Folders.objects.get(slug='google', created_by=self.user).folder.all().order_by('-modified')
+        self.assertQuerysetEqual(response.context['bookmarks'], bookmarks, transform=lambda x: x)
+
+    def test_get_bookmark_list_unknown_sorting_order(self):
+        """
+        Testing bookmark list page if it is going to default sort by name
+        if invalid sorting given to the page.
+        """
+        response = self.client.get(reverse('bookmarksapp:bookmarks', kwargs={'slug': 'google'}) + "?sort=-dsfdfdsfsdf")
+        bookmarks = Folders.objects.get(slug='google', created_by=self.user).folder.all().order_by('name')
+        self.assertQuerysetEqual(response.context['bookmarks'], bookmarks, transform=lambda x: x)
