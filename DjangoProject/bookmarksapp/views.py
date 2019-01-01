@@ -2,7 +2,7 @@ from django.shortcuts import reverse
 from django.http import HttpResponseRedirect
 from django.views.generic import ListView
 
-from .models import  Folders
+from .models import Folders
 
 
 def index(request):
