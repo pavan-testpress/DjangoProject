@@ -3,6 +3,7 @@
         {% load static %}
         <link rel="stylesheet" href="{% static 'bookmarksapp/main.css' %}">
         <link rel="stylesheet" href="{% static 'bookmarksapp/all.css' %}">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     </head>
     <body>
          <div id="container">
@@ -27,5 +28,16 @@
                 <span>Copyright &copy; 2018</span>
             </footer>
         </div>
+    <script>
+        plus =  document.getElementById('icon');
+        content = document.getElementById('create');
+        plus.addEventListener("click", function(){
+            content.innerHTML = `
+                <i class="fas fa-folder"></i>
+                <input type="text" id="text_field" name="name" form="form1">
+                <input type="submit" id="btn" form="form1">
+            `;
+        });
+    </script>
     </body>
 </html>

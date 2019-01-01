@@ -1,6 +1,6 @@
-from django.shortcuts import reverse
-from django.http import HttpResponseRedirect
-from django.views.generic import ListView
+from django.shortcuts import reverse, render
+from django.http import HttpResponseRedirect, HttpResponse
+from django.views.generic import ListView, CreateView
 
 from .models import Folders
 
@@ -66,3 +66,28 @@ class BookmarksListView(ListView):
             return sort
         else:
             return None
+
+
+class FolderCreateView(CreateView, FolderListView):
+    model = Folders
+    fields = ['name', ]
+    template_name = 'bookmarksapp/folderlist.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return super(FolderCreateView, self).dispatch(request, *args, **kwargs)
+        else:
+            return HttpResponseRedirect(reverse('authenticationapp:login'))
+
+    def form_valid(self, form):
+        form = form.save(commit=False)
+        form.created_by = self.request.user
+        if Folders.objects.filter(name__iexact=form.name, created_by=form.created_by).exists():
+            error_message = 'Folder with name ' + str(form.name).capitalize() + ' already exists'
+            folders = Folders.objects.filter(created_by=self.request.user)
+            return render(self.request, 'bookmarksapp/folderexists.html',
+                          {'error_message': error_message, 'folders': folders})
+
+        else:
+            form.save()
+            return HttpResponseRedirect(reverse('bookmarksapp:folders'))

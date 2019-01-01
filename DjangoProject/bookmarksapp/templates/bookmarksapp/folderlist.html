@@ -19,5 +19,15 @@
                 </div>
             </div>
         {% endfor %}
+        <form id="form1" action="{% url 'bookmarksapp:create_folder' %}" method="post">
+            {% csrf_token %}
+        </form>
+        <div id="create" class="folder">
+            <i id="icon" class="fas fa-plus"></i>
+            <div id="btn"></div>
+        </div>
     </div>
+{% block folderexists %}
+
+{% endblock %}
 {% endblock %}

@@ -154,3 +154,39 @@ class BookmarksAppTestCase(TestCase):
         response = self.client.get(reverse('bookmarksapp:bookmarks', kwargs={'slug': 'google'}) + "?sort=-dsfdfdsfsdf")
         bookmarks = Folders.objects.get(slug='google', created_by=self.user).folder.all().order_by('name')
         self.assertQuerysetEqual(response.context['bookmarks'], bookmarks, transform=lambda x: x)
+
+    def test_get_folder_create_view_without_logged_in(self):
+        """
+        Test to access folder create page without logged in the user.
+        """
+        self.client.get(reverse('authenticationapp:logout'))
+        response = self.client.get(reverse('bookmarksapp:create_folder'))
+        self.assertRedirects(response, reverse('authenticationapp:login'))
+
+    def test_get_folder_create_view(self):
+        """
+        Test folder create url is going to bookmarklist or not.
+        """
+        response = self.client.get(reverse('bookmarksapp:create_folder'),)
+        self.assertEqual(response.status_code, 200)
+
+    def test_post_folder_create_view(self):
+        """
+        Test to create new folder
+        """
+        data = {
+            'name': 'Amd'
+        }
+        response = self.client.post(reverse('bookmarksapp:create_folder'), data)
+        self.assertEqual(Folders.objects.get(name=data['name']).name, data['name'])
+
+    def test_post_same_folder_create_view(self):
+        """
+        Test to create same folder
+        """
+        data = {
+            'name': 'Google'
+        }
+        response = self.client.post(reverse('bookmarksapp:create_folder'), data)
+        self.assertEqual(Folders.objects.filter(name=data['name'],created_by=self.user).count(), 1)
+

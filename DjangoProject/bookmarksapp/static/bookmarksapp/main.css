@@ -140,6 +140,9 @@ main >.folders >.folder> .folder-content{
     background: #D0D1CF;
     box-shadow:0 0 25px 4px blue;
 }
+main>.folders>.folder>.folder-content>.name{
+    text-transform: capitalize;
+}
 main .folders .folder .folder-content .count{
     margin-left: auto;
 }
@@ -175,4 +178,27 @@ main >.bookmarks >.bookmark:hover >.name,
 main >.bookmarks >.bookmark:hover >a{
     font-size: 1.3em;
     color: white;
+}
+main> .folders> .folder > i{
+    color: black;
+    font-size:10em;
+}
+/* #create:hover
+{
+    font-size: 1em;
+    border-radius: 0em;
+    background: transparent;
+    box-shadow:0 0 0 0 blue;
+} */
+#text_field{
+    text-align: center;
+    border-radius: 1em;
+}
+#btn{
+    background: #605F5E;
+    border-radius: 1em;
+    color: white;
+}
+#btn:hover{
+    border:2px solid blue;
 }

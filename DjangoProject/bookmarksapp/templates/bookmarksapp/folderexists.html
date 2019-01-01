@@ -1,0 +1,11 @@
+{% extends 'bookmarksapp/folderlist.html' %}
+{% load static %}
+{% block folderexists %}
+<p align ="center" id = "message" style="color: red;"> {{error_message}}</p>
+<script>
+    setTimeout(
+        function(){
+            $('#message').fadeOut('fast');
+        }, 2000);
+</script>
+{% endblock %}
