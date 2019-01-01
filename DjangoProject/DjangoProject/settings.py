@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -52,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'DjangoProject.urls'
@@ -117,8 +119,11 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
@@ -130,3 +135,5 @@ STATICFILES_FINDERS = (
 
 AUTH_USER_MODEL = 'authenticationapp.MyUser'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+django_heroku.settings(locals())
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
