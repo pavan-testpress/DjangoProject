@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'authenticationapp.apps.AuthenticationappConfig',
     'bookmarksapp.apps.BookmarksappConfig',
     'bootstrap4',
-    'crispy_forms'
+    'crispy_forms',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -122,5 +123,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_FINDERS = (
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+)
+
 AUTH_USER_MODEL = 'authenticationapp.MyUser'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
