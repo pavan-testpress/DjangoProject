@@ -15,6 +15,11 @@ class Folders(TimeStampedModel):
         self.slug = slugify(self.name)
         super(Folders, self).save(*args, **kwargs)
 
+    # def clean(self):
+    #     super(Folders, self).clean()
+    #     if Folders.objects.filter(name__iexact=self.name, created_by=self.created_by).exists():
+    #         raise ValidationError('Folder exists')
+
     def __str__(self):
         return self.name
 

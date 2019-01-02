@@ -160,8 +160,8 @@ class BookmarksAppTestCase(TestCase):
         Test to access folder create page without logged in the user.
         """
         self.client.get(reverse('authenticationapp:logout'))
-        response = self.client.get(reverse('bookmarksapp:create_folder'))
-        self.assertRedirects(response, reverse('authenticationapp:login'))
+        response = self.client.get(reverse('bookmarksapp:create_folder'), follow=True)
+        self.assertEqual(response.redirect_chain[0][0].split('?')[0], reverse('authenticationapp:login'))
 
     def test_get_folder_create_view(self):
         """
@@ -177,16 +177,15 @@ class BookmarksAppTestCase(TestCase):
         data = {
             'name': 'Amd'
         }
-        response = self.client.post(reverse('bookmarksapp:create_folder'), data)
-        self.assertEqual(Folders.objects.get(name=data['name']).name, data['name'])
+        self.client.post(reverse('bookmarksapp:create_folder'), data)
+        assert Folders.objects.filter(name=data['name']).exists()
 
-    def test_post_same_folder_create_view(self):
+    def test_create_duplicate_folder(self):
         """
         Test to create same folder
         """
         data = {
             'name': 'Google'
         }
-        response = self.client.post(reverse('bookmarksapp:create_folder'), data)
-        self.assertEqual(Folders.objects.filter(name=data['name'],created_by=self.user).count(), 1)
-
+        self.client.post(reverse('bookmarksapp:create_folder'), data)
+        assert Folders.objects.filter(name=data['name'], created_by=self.user).exists()

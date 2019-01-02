@@ -1,6 +1,8 @@
 from django.shortcuts import reverse, render
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect
 from django.views.generic import ListView, CreateView
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 
 from .models import Folders
 
@@ -68,16 +70,11 @@ class BookmarksListView(ListView):
             return None
 
 
+@method_decorator(login_required, name="dispatch")
 class FolderCreateView(CreateView, FolderListView):
     model = Folders
     fields = ['name', ]
     template_name = 'bookmarksapp/folderlist.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return super(FolderCreateView, self).dispatch(request, *args, **kwargs)
-        else:
-            return HttpResponseRedirect(reverse('authenticationapp:login'))
 
     def form_valid(self, form):
         form = form.save(commit=False)
@@ -87,6 +84,13 @@ class FolderCreateView(CreateView, FolderListView):
             folders = Folders.objects.filter(created_by=self.request.user)
             return render(self.request, 'bookmarksapp/folderexists.html',
                           {'error_message': error_message, 'folders': folders})
+        # try:
+        #     from.created_by = self.request.user
+        #     form.save()
+        # except ValidationError as e:
+        #     folders = Folders.objects.filter(created_by=self.request.user)
+        #     return render(self.request, 'bookmarksapp/folderexists.html',
+        #                   {'error_message': e, 'folders': folders})
 
         else:
             form.save()
