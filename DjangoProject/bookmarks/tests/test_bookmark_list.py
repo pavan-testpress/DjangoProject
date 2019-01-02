@@ -12,10 +12,10 @@ from bookmarks.models import Folder, Bookmark
 class BookmarksTestCase(Exam, TestCase):
     fake = Faker()
     user = None
+
     @fixture
     def user(self):
         return MyUser.objects.create_user(username="pavan@gmail.com", password="pavankumar")
-
 
     @before
     def inserting_sample_data_and_login_user(self):
@@ -38,25 +38,23 @@ class BookmarksTestCase(Exam, TestCase):
             name="Google",
             created_by=self.user
         )
-
         y = Folder.objects.create(
             name="Yahoo",
             created_by=self.user
         )
-
         Bookmark.objects.create(
             folder=f,
             url="https://www.google.com",
             name='Google Website',
             created_by=self.user
         )
-
         Bookmark.objects.create(
             folder=y,
             url="https://www.yahoo.com",
             name='Yahoo Website',
             created_by=self.user
         )
+
     @before
     def login(self):
         self.client.post('/login/?next=/bookmarks/folders/', {'username': 'pavan@gmail.com', 'password': 'pavankumar'})
@@ -96,14 +94,6 @@ class BookmarksTestCase(Exam, TestCase):
         self.assertTrue('is_paginated' in response.context)
         self.assertTrue(response.context['is_paginated'] == True)
         self.assertTrue(len(response.context['folders']) == 2)
-
-    def test_get_folder_list_view_by_name(self):
-        """
-        Test Sorting feature by name in folderlistpage.
-        """
-        response = self.client.get(reverse('bookmarks:folders') + "?sort=name")
-        folders = Folder.objects.filter(created_by=self.user).order_by('name')[:10]
-        self.assertQuerysetEqual(response.context['folders'], folders, transform=lambda x: x)
 
     def test_get_folder_list_view_by_name(self):
         """
