@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Bookmarks, Folders
+from .models import Bookmark, Folder
 
-admin.site.register(Bookmarks)
-admin.site.register(Folders)
+admin.site.register(Bookmark)
+admin.site.register(Folder)

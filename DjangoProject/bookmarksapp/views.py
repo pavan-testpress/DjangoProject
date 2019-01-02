@@ -2,7 +2,7 @@ from django.shortcuts import reverse
 from django.http import HttpResponseRedirect
 from django.views.generic import ListView
 
-from .models import Folders
+from .models import Folder
 
 
 def index(request):
@@ -13,7 +13,7 @@ def index(request):
 
 
 class FolderListView(ListView):
-    model = Folders
+    model = Folder
     context_object_name = 'folders'
     template_name = 'bookmarksapp/folderlist.html'
 
