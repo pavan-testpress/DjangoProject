@@ -7,5 +7,5 @@ app_name = "bookmarksapp"
 urlpatterns = [
     path('', views.index, name="index"),
     path('folders/', views.FolderListView.as_view(), name="folders"),
-    path('folders/<slug>/', views.BookmarksListView.as_view(), name="bookmarks")
+    path('folders/<slug>/', views.BookmarksListView.as_view(), name="folder-bookmarks")
 ]
