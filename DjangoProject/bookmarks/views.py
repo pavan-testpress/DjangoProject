@@ -1,7 +1,8 @@
 from django.shortcuts import reverse
 from django.http import HttpResponseRedirect
 from django.views.generic import ListView
-from django.core.paginator import Paginator
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 
 from .models import Folder
 
@@ -13,6 +14,7 @@ def index(request):
         return HttpResponseRedirect(reverse('authenticationapp:login'))
 
 
+@method_decorator(login_required, name='dispatch')
 class FolderListView(ListView):
     model = Folder
     context_object_name = 'folders'
@@ -31,4 +33,4 @@ class FolderListView(ListView):
                 return sort
             return sort
         else:
-            return None
+            return 'name'

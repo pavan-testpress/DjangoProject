@@ -19,19 +19,19 @@
 {% block footer %}
 <span>
 {% if is_paginated %}
-        <div class="pagination">
-            <span class="page-links">
-                {% if page_obj.has_previous %}
-                    <a href="{% url 'bookmarks:folders' %}?page={{ page_obj.previous_page_number }}">Previous</a>
-                {% endif %}
-                <span class="page-current">
-                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-                </span>
-                {% if page_obj.has_next %}
-                    <a href="{% url 'bookmarks:folders' %}?page={{ page_obj.next_page_number }}">Next</a>
-                {% endif %}
+    <div class="pagination">
+        <span class="page-links">
+            {% if page_obj.has_previous %}
+                <a href="{% url 'bookmarks:folders' %}?page={{ page_obj.previous_page_number }}">Previous</a>
+            {% endif %}
+            <span class="page-current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
             </span>
-        </div>
+            {% if page_obj.has_next %}
+                <a href="{% url 'bookmarks:folders' %}?page={{ page_obj.next_page_number }}">Next</a>
+            {% endif %}
+        </span>
+    </div>
 {% endif %}
 </span>
 <span>Copyright &copy; 2019</span>

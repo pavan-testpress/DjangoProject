@@ -13,6 +13,8 @@ django-crispy-forms = "*"
 django-model-utils = "*"
 django-filter = "*"
 faker = "*"
+exam = "*"
+coverage = "*"
 
 [requires]
 python_version = "3.6"

@@ -2,35 +2,34 @@ from django.test import TestCase
 from django.shortcuts import reverse
 
 from faker import Faker
+from exam import Exam
+from exam import fixture, before
 
 from authenticationapp.models import MyUser
 from bookmarks.models import Folder, Bookmark
 
 
-class BookmarksTestCase(TestCase):
-    user = None
+class BookmarksTestCase(Exam, TestCase):
     fake = Faker()
+    user = None
+    @fixture
+    def user(self):
+        return MyUser.objects.create_user(username="pavan@gmail.com", password="pavankumar")
 
-    def setUp(self):
+
+    @before
+    def inserting_sample_data_and_login_user(self):
         """
         This function will execute before for each testcase.
-        User creation and login will happen.
-        Some sample bookmarks and folders will be save in database.
+        Some sample bookmarks and folders will be saved in database.
         """
-        self.credentials = {
-            'username': 'pavan@gmail.com',
-            'password': 'pavankumar'
-        }
-        MyUser.objects.create_user(**self.credentials)
-        self.user = self.client.post(reverse('authenticationapp:login'), self.credentials, follow=True).context['user']
-
         for i in range(20):
-            f = Folder.objects.create(
+            folder = Folder.objects.create(
                 name=self.fake.name(),
                 created_by=self.user
             )
             Bookmark.objects.create(
-                folder=f,
+                folder=folder,
                 url=self.fake.name(),
                 name=self.fake.name(),
                 created_by=self.user
@@ -58,35 +57,60 @@ class BookmarksTestCase(TestCase):
             name='Yahoo Website',
             created_by=self.user
         )
+    @before
+    def login(self):
+        self.client.post('/login/?next=/bookmarks/folders/', {'username': 'pavan@gmail.com', 'password': 'pavankumar'})
 
-    def tearDown(self):
-        """
-        Logout the user after finishing every testcase.
-        """
-        self.client.get(reverse('authenticationapp:logout'))
-
-    def test_folder_list_without_login(self):
+    def test_redirect_if_not_logged_in(self):
         """
         Test folderlist page without logged in the user.
         """
         self.client.get(reverse('authenticationapp:logout'))
-        response = self.client.get(reverse('bookmarks:index'))
-        self.assertRedirects(response, reverse('authenticationapp:login'))
-
-    def test_get_folder_list_view(self):
-        """
-        Test to get folder list page.
-        """
         response = self.client.get(reverse('bookmarks:folders'))
-        folders = Folder.objects.filter(created_by=self.user)
-        self.assertQuerysetEqual(response.context['folders'], folders, transform=lambda x: x, ordered=False)
+        self.assertRedirects(response, '/login/?next=/bookmarks/folders/')
+
+    def test_view_url_exists_at_desired_location(self):
+        response = self.client.get('/bookmarks/folders/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_url_accessible_by_name(self):
+        response = self.client.get(reverse('bookmarks:folders'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        response = self.client.get(reverse('bookmarks:folders'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'bookmarks/folderlist.html')
+
+    def test_pagination_is_ten(self):
+        response = self.client.get(reverse('bookmarks:folders'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('is_paginated' in response.context)
+        self.assertTrue(response.context['is_paginated'] == True)
+        self.assertTrue(len(response.context['folders']) == 10)
+
+    def test_lists_all_folders(self):
+        # Get third page and confirm it has (exactly) remaining 3 items
+        response = self.client.get(reverse('bookmarks:folders') + '?page=3')
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('is_paginated' in response.context)
+        self.assertTrue(response.context['is_paginated'] == True)
+        self.assertTrue(len(response.context['folders']) == 2)
 
     def test_get_folder_list_view_by_name(self):
         """
         Test Sorting feature by name in folderlistpage.
         """
         response = self.client.get(reverse('bookmarks:folders') + "?sort=name")
-        folders = Folder.objects.filter(created_by=self.user).order_by('name')
+        folders = Folder.objects.filter(created_by=self.user).order_by('name')[:10]
+        self.assertQuerysetEqual(response.context['folders'], folders, transform=lambda x: x)
+
+    def test_get_folder_list_view_by_name(self):
+        """
+        Test Sorting feature by name in folderlistpage.
+        """
+        response = self.client.get(reverse('bookmarks:folders') + "?sort=name")
+        folders = Folder.objects.filter(created_by=self.user).order_by('name')[:10]
         self.assertQuerysetEqual(response.context['folders'], folders, transform=lambda x: x)
 
     def test_get_folder_list_view_by_created_date(self):
@@ -94,7 +118,7 @@ class BookmarksTestCase(TestCase):
         Test sort by created date in folderlist page.
         """
         response = self.client.get(reverse('bookmarks:folders') + "?sort=-created")
-        folders = Folder.objects.filter(created_by=self.user).order_by('-created')
+        folders = Folder.objects.filter(created_by=self.user).order_by('-created')[:10]
         self.assertQuerysetEqual(response.context['folders'], folders, transform=lambda x: x)
 
     def test_get_folder_list_view_by_modified_date(self):
@@ -102,7 +126,7 @@ class BookmarksTestCase(TestCase):
         Test sort by modified date in folderlist page.
         """
         response = self.client.get(reverse('bookmarks:folders') + "?sort=-modified")
-        folders = Folder.objects.filter(created_by=self.user).order_by('-modified')
+        folders = Folder.objects.filter(created_by=self.user).order_by('-modified')[:10]
         self.assertQuerysetEqual(response.context['folders'], folders, transform=lambda x: x)
 
     def test_get_folder_list_unknown_sorting_order(self):
@@ -111,5 +135,5 @@ class BookmarksTestCase(TestCase):
         if invalid sorting given to the page.
         """
         response = self.client.get(reverse('bookmarks:folders') + "?sort=-modisadasd")
-        folders = Folder.objects.filter(created_by=self.user).order_by('name')
+        folders = Folder.objects.filter(created_by=self.user).order_by('name')[:10]
         self.assertQuerysetEqual(response.context['folders'], folders, transform=lambda x: x)

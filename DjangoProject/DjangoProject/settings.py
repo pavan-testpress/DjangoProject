@@ -130,3 +130,4 @@ STATICFILES_FINDERS = (
 
 AUTH_USER_MODEL = 'authenticationapp.MyUser'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+LOGIN_URL = '/login/'
