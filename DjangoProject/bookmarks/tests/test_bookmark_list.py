@@ -4,7 +4,7 @@ from django.shortcuts import reverse
 from faker import Faker
 
 from authenticationapp.models import MyUser
-from .models import Folder, Bookmark
+from bookmarks.models import Folder, Bookmark
 
 
 class BookmarksTestCase(TestCase):
