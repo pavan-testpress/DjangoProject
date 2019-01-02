@@ -7,7 +7,7 @@ from .models import Folder
 
 def index(request):
     if request.user.is_authenticated:
-        return HttpResponseRedirect(reverse('bookmarksapp:folders'))
+        return HttpResponseRedirect(reverse('bookmarks:folders'))
     else:
         return HttpResponseRedirect(reverse('authenticationapp:login'))
 
@@ -15,7 +15,7 @@ def index(request):
 class FolderListView(ListView):
     model = Folder
     context_object_name = 'folders'
-    template_name = 'bookmarksapp/folderlist.html'
+    template_name = 'bookmarks/folderlist.html'
 
     def get_queryset(self):
         qs = super().get_queryset()
