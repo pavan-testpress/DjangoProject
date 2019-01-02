@@ -57,14 +57,6 @@ class BookmarksTestCase(TestCase):
         response = self.client.get(reverse('bookmarks:index'))
         self.assertRedirects(response, reverse('authenticationapp:login'))
 
-    def test_post_login_page(self):
-        """
-        Test to Login Page by posting credentials.
-        """
-        self.client.get(reverse('authenticationapp:logout'))
-        response = self.client.post(reverse('authenticationapp:login'), self.credentials)
-        self.assertRedirects(response, reverse('authenticationapp:index'))
-
     def test_get_folder_list_view(self):
         """
         Test to get folder list page.
