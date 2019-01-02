@@ -1,6 +1,8 @@
 from django.shortcuts import reverse
 from django.http import HttpResponseRedirect
 from django.views.generic import ListView
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 from .models import Folders
 
@@ -12,16 +14,11 @@ def index(request):
         return HttpResponseRedirect(reverse('authenticationapp:login'))
 
 
+@method_decorator(login_required, name="dispatch")
 class FolderListView(ListView):
     model = Folders
     context_object_name = 'folders'
     template_name = 'bookmarksapp/folderlist.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return super(FolderListView, self).dispatch(request, *args, **kwargs)
-        else:
-            return HttpResponseRedirect(reverse('authenticationapp:login'))
 
     def get_queryset(self):
         qs = super().get_queryset()
@@ -31,23 +28,16 @@ class FolderListView(ListView):
         if 'sort' in self.request.GET:
             sort = self.request.GET['sort']
             if sort not in ['-modified', '-created', 'name']:
-                sort = 'name'
-                return sort
+                return 'name'
             return sort
-        else:
-            return None
+        return None
 
 
+@method_decorator(login_required, name="dispatch")
 class BookmarksListView(ListView):
     model = Folders
     context_object_name = 'bookmarks'
-    template_name = 'bookmarksapp/bookmarkslist.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return super(BookmarksListView, self).dispatch(request, *args, **kwargs)
-        else:
-            return HttpResponseRedirect(reverse('authenticationapp:login'))
+    template_name = 'bookmarksapp/bookmarks-list.html'
 
     def get_queryset(self):
         if 'sort' in self.request.GET:
@@ -61,8 +51,6 @@ class BookmarksListView(ListView):
         if 'sort' in self.request.GET:
             sort = self.request.GET['sort']
             if sort not in ['-modified', '-created', 'name']:
-                sort = 'name'
-                return sort
+                return 'name'
             return sort
-        else:
-            return None
+        return None

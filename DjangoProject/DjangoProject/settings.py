@@ -38,11 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'authenticationapp.apps.AuthenticationappConfig',
-<<<<<<< HEAD
     'bookmarks.apps.BookmarksConfig',
-=======
-    'bookmarksapp.apps.BookmarksappConfig',
->>>>>>> ae43549... Fix git pushing
     'bootstrap4',
     'crispy_forms',
     'django_filters',
