@@ -1,12 +1,15 @@
 from django.test import TestCase
 from django.shortcuts import reverse
 
+from faker import Faker
+
 from authenticationapp.models import MyUser
 from .models import Folder, Bookmark
 
 
 class BookmarksTestCase(TestCase):
     user = None
+    fake = Faker()
 
     def setUp(self):
         """
@@ -20,10 +23,23 @@ class BookmarksTestCase(TestCase):
         }
         MyUser.objects.create_user(**self.credentials)
         self.user = self.client.post(reverse('authenticationapp:login'), self.credentials, follow=True).context['user']
+
+        for i in range(20):
+            f = Folder.objects.create(
+                name=self.fake.name(),
+                created_by=self.user
+            )
+            Bookmark.objects.create(
+                folder=f,
+                url=self.fake.name(),
+                name=self.fake.name(),
+                created_by=self.user
+            )
         f = Folder.objects.create(
             name="Google",
             created_by=self.user
         )
+
         y = Folder.objects.create(
             name="Yahoo",
             created_by=self.user
