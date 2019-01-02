@@ -1,6 +1,7 @@
 from django.shortcuts import reverse
 from django.http import HttpResponseRedirect
 from django.views.generic import ListView
+from django.core.paginator import Paginator
 
 from .models import Folder
 
@@ -16,6 +17,7 @@ class FolderListView(ListView):
     model = Folder
     context_object_name = 'folders'
     template_name = 'bookmarks/folderlist.html'
+    paginate_by = 10
 
     def get_queryset(self):
         qs = super().get_queryset()
