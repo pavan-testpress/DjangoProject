@@ -1,0 +1,28 @@
+{% extends 'bookmarks/base.html' %}
+{% load static %}
+{% block aside %}
+    <div class="title">Create</div>
+{% endblock %}
+{% block content %}
+    <form method="Post" id="form1">
+        {% csrf_token %}
+    </form>
+    <div id="bookmarks">
+            <div id="bookmark" >
+                <div>Name:
+                    <input name="name" type="text" form="form1">
+                </div>
+                <div>URL:
+                    <input name="url" type="url" form="form1">
+                </div>
+                    <input type="submit" form="form1" value="Submit">
+                    {% block invalid %}
+
+                    {% endblock %}
+            </div>
+    </div>
+{% endblock %}
+
+{% block footer %}
+<span>Copyright &copy; 2019</span>
+{% endblock %}

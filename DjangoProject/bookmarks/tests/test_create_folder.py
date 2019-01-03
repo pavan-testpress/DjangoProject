@@ -7,7 +7,8 @@ from exam import fixture, before
 from authenticationapp.models import MyUser
 from bookmarks.models import Folder
 
-class BookmarksTestCase(Exam, TestCase):
+
+class CreateFolderTestCase(Exam, TestCase):
 
     @fixture
     def user(self):
