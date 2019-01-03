@@ -89,7 +89,7 @@ aside>a:hover{
 }
 footer{
     grid-area:footer;
-    display: gird;
+    display: grid;
 }
 
 footer span{
