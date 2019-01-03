@@ -1,7 +1,7 @@
 {% extends 'bookmarks/base.html' %}
 {% load static %}
 {% block aside %}
-    <div class="title">sort by</div>
+    <div class="title">sort</div>
     <a href="{% url 'bookmarks:folders' %}?sort=name">name</a>
     <a href="{% url 'bookmarks:folders' %}?sort=-created">created</a>
     <a href="{% url 'bookmarks:folders' %}?sort=-modified">modified</a>
@@ -25,9 +25,7 @@
 
 {% block r_aside %}
     <div id="title">Actions</div>
-    <a href="{% url 'bookmarks:create-folder' %}">Create</a>
-    <a href="#">Not</a>
-    <a href="#">Not</a>
+    <a href="{% url 'bookmarks:create-folder' %}">New Folder</a>
 {% endblock %}
 
 {% block footer %}
