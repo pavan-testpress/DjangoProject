@@ -98,15 +98,19 @@ class FolderCreateView(CreateView):
 class BookmarkCreateView(CreateView):
     model = Bookmark
     fields = ['name', 'url']
+    template_name = 'bookmarks/bookmark_form.html'
 
     def form_valid(self, form):
+        folder = Folder.objects.get(slug=self.request.path.split('/')[3], created_by=self.request.user)
         if Bookmark.objects.filter(name__iexact=form.cleaned_data['name']
-                                   , url_iexact=form.cleaned_data['url']
-                                   , created_by=self.request.user).exists():
-            error = form.cleaned_data['name'] + ":" + form.cleaned_data['url'] + "already exists.."
+                                   , url__iexact=form.cleaned_data['url']
+                                   , created_by=self.request.user
+                                   , folder=folder).exists():
+            error = form.cleaned_data['name'] + " with " + form.cleaned_data['url'] + " already exists.."
             return render(self.request, 'bookmarks/invalid_bookmark_form.html', {'error': error})
         else:
             form = form.save(commit=False)
             form.created_by = self.request.user
+            form.folder = folder
             form.save()
-            return HttpResponseRedirect(reverse('bookmarks:folder-bookmarks'))
+            return HttpResponseRedirect(reverse('bookmarks:folder-bookmarks', kwargs={'slug': folder.slug}))

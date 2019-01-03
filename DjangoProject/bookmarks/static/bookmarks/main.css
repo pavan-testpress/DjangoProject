@@ -22,7 +22,7 @@ body{
 #container{
     display: grid;
     min-height: 100vh;
-    grid-template-columns: 110px 1fr 110px;
+    grid-template-columns: 130px 1fr 110px;
     grid-template-rows: 60px 1fr 50px;
     grid-template-areas: 'nav nav nav'
                          'l_aside main r_aside'
@@ -223,4 +223,15 @@ main >.bookmarks >.bookmark:hover >a{
     border-left: 10px solid red;
     color: white;
     font-size: 25px;
+}
+#bookmarks{
+    display: flex;
+    flex-direction: column;
+}
+#bookmark{
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

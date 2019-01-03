@@ -9,7 +9,7 @@ from authenticationapp.models import MyUser
 from bookmarks.models import Folder, Bookmark
 
 
-class BookmarksTestCase(Exam, TestCase):
+class BookmarksListTestCase(Exam, TestCase):
     fake = Faker()
     user = None
 
