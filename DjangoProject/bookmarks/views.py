@@ -1,6 +1,6 @@
 from django.shortcuts import reverse, render
 from django.http import HttpResponseRedirect
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, UpdateView
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 
@@ -114,3 +114,17 @@ class BookmarkCreateView(CreateView):
             form.folder = folder
             form.save()
             return HttpResponseRedirect(reverse('bookmarks:folder-bookmarks', kwargs={'slug': folder.slug}))
+
+
+@method_decorator(login_required, name="dispatch")
+class FolderUpdateView(UpdateView):
+    model = Folder
+    fields = ['name']
+    template_name = 'bookmarks/folder_update_form.html'
+
+    def form_valid(self, form):
+        if Folder.objects.filter(name__iexact=form.cleaned_data['name'], created_by=self.request.user).exists():
+            error = form.cleaned_data['name'] + " already exists.."
+            return render(self.request, 'bookmarks/invalid_folder_form.html', {'error': error})
+        else:
+            return super(FolderUpdateView, self).form_valid(form)

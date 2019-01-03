@@ -22,7 +22,7 @@ body{
 #container{
     display: grid;
     min-height: 100vh;
-    grid-template-columns: 130px 1fr 110px;
+    grid-template-columns: 90px 1fr 150px;
     grid-template-rows: 60px 1fr 50px;
     grid-template-areas: 'nav nav nav'
                          'l_aside main r_aside'
@@ -71,7 +71,7 @@ nav a:hover{
     padding: 0 1em;
     padding-bottom: 1em;
     border-bottom: 1px solid black;
-    text-align: center;
+    text-align: left;
     color: black;
     text-transform: capitalize;
     letter-spacing: 1px;
@@ -80,10 +80,10 @@ nav a:hover{
 .l_aside>a{
     border-bottom: 1px solid black;
     text-decoration: none;
-    padding: 0.5em;
+    padding: 0.1em;
     font-size:1.2em;
+    text-transform: capitalize;
     color: blue;
-    text-align: center;
     transition-property: all;
     transition-duration: 0.3s;
 }
@@ -91,7 +91,7 @@ nav a:hover{
     background: #605F5E;
     border-right: 10px solid red;
     color: white;
-    font-size: 25px;
+    font-size: 20px;
 }
 .sidebar{
     display: flex;
@@ -211,10 +211,10 @@ main >.bookmarks >.bookmark:hover >a{
 .r_aside>a{
     border-bottom: 1px solid black;
     text-decoration: none;
-    padding: 0.5em;
+    padding: 0.1em;
     font-size:1.2em;
     color: blue;
-    text-align: center;
+    text-align: left;
     transition-property: all;
     transition-duration: 0.3s;
 }
@@ -222,7 +222,6 @@ main >.bookmarks >.bookmark:hover >a{
     background: #605F5E;
     border-left: 10px solid red;
     color: white;
-    font-size: 25px;
 }
 #bookmarks{
     display: flex;
