@@ -78,7 +78,7 @@ class BookmarksTestCase(Exam, TestCase):
     def test_view_uses_correct_template(self):
         response = self.client.get(reverse('bookmarks:folders'))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'bookmarks/folderlist.html')
+        self.assertTemplateUsed(response, 'bookmarks/folder_list.html')
 
     def test_pagination_is_ten(self):
         response = self.client.get(reverse('bookmarks:folders'))
