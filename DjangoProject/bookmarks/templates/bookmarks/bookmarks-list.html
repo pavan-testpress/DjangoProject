@@ -13,6 +13,7 @@
             <div class="bookmark">
                 <div class="name">{{ bookmark.name }}</div>
                 <a href="{{ bookmark.url }}">{{ bookmark.url }}</a>
+                <a href="{{ bookmark.id }}/edit/" style="text-align: right;">Edit</a>
             </div>
         {% endfor %}
     </div>

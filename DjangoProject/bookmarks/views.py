@@ -101,7 +101,7 @@ class BookmarkCreateView(CreateView):
     template_name = 'bookmarks/bookmark_form.html'
 
     def form_valid(self, form):
-        folder = Folder.objects.get(slug=self.request.path.split('/')[3], created_by=self.request.user)
+        folder = Folder.objects.get(slug=self.kwargs['slug'], created_by=self.request.user)
         if Bookmark.objects.filter(name__iexact=form.cleaned_data['name']
                                    , url__iexact=form.cleaned_data['url']
                                    , created_by=self.request.user
@@ -128,3 +128,23 @@ class FolderUpdateView(UpdateView):
             return render(self.request, 'bookmarks/invalid_folder_form.html', {'error': error})
         else:
             return super(FolderUpdateView, self).form_valid(form)
+
+
+@method_decorator(login_required, name="dispatch")
+class BookmarkUpdateView(UpdateView):
+    model = Bookmark
+    fields = ['name', 'url']
+    template_name = 'bookmarks/bookmark_update_form.html'
+
+    def form_valid(self, form):
+        folder = Folder.objects.get(slug=self.kwargs['slug'], created_by=self.request.user)
+        if (Bookmark.objects.filter(url__iexact=form.cleaned_data['url'],
+                                    created_by=self.request.user,
+                                    folder=folder).exists())or(Bookmark.objects.filter(
+                                    name__iexact=form.cleaned_data['name'],
+                                    created_by=self.request.user,
+                                    folder=folder).exists()):
+            error = form.cleaned_data['name'] + " with " + form.cleaned_data['url'] + " already exists.."
+            return render(self.request, 'bookmarks/invalid_update_bookmark.html', {'error': error, 'form': form})
+        else:
+            return super(BookmarkUpdateView, self).form_valid(form)
