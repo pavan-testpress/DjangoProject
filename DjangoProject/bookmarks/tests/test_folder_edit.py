@@ -64,7 +64,7 @@ class UpdateFolderTestCase(Exam, TestCase):
     def test_editing_with_existing_folder(self):
         response = self.client.post(reverse('bookmarks:folder-edit', kwargs={'slug': 'google'}), {'name': 'Yahoo'})
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'bookmarks/invalid_folder_form.html')
+        self.assertTemplateUsed(response, 'bookmarks/invalid_folder_update_form.html')
         self.assertEqual(response.context['error'], 'Yahoo already exists..')
 
     def test_edit_folder(self):

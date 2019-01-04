@@ -1,0 +1,29 @@
+{% extends 'bookmarks/base.html' %}
+{% load static %}
+{% block content %}
+<form method="Post" id="form1">
+    {% csrf_token %}
+</form>
+    <div class="folders">
+            <div id ="folder" class="folder">
+                <a>
+                    <i class="fas fa-folder"></i>
+                </a>
+                <div id="folder-content" class="folder-content">
+                    Are you sure you want to delete {{object.name}}?
+                </div>
+                <div style="display: flex; flex: auto; justify-content: space-between; padding:10px">
+                    <a style="text-align: center; padding:10px">
+                        <button style="padding:10px" form="form1">Yes</button>
+                    </a>
+                    <a href="{% url 'bookmarks:folder-bookmarks' slug=object.slug %}" style="text-align: center; padding:10px">
+                        <button style="padding:10px">No</button>
+                    </a>
+                </div>
+            </div>
+    </div>
+{% endblock %}
+
+{% block footer %}
+<span>Copyright &copy; 2019</span>
+{% endblock %}
