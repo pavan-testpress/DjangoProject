@@ -2,6 +2,7 @@
     <head>
         {% load static %}
         <link rel="stylesheet" href="{% static 'bookmarks/main.css' %}">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     </head>
     <body>
@@ -13,7 +14,7 @@
                     <a href="{% url 'authenticationapp:logout' %}">logout</a>
                 </div>
             </nav>
-             <aside>
+             <aside class="l_aside">
                  {% block aside %}
 
                  {% endblock %}
@@ -23,6 +24,11 @@
 
                 {% endblock %}
             </main>
+             <aside class="r_aside">
+                 {% block r_aside %}
+
+                 {% endblock %}
+             </aside>
             <footer>
                 {% block footer %}
 
