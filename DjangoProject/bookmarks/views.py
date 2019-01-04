@@ -18,7 +18,7 @@ def index(request):
 class FolderListView(ListView):
     model = Folder
     context_object_name = 'folders'
-    template_name = 'bookmarks/folderlist.html'
+    template_name = 'bookmarks/folder_list.html'
     paginate_by = 10
 
     def get_queryset(self):
