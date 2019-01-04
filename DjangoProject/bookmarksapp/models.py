@@ -15,6 +15,9 @@ class Folders(TimeStampedModel):
         self.slug = slugify(self.name)
         super(Folders, self).save(*args, **kwargs)
 
+    def __str__(self):
+        return self.name
+
 
 class Bookmarks(TimeStampedModel):
     folder = models.ForeignKey(Folders, on_delete=models.SET_NULL, related_name='folder', null=True)
@@ -26,3 +29,6 @@ class Bookmarks(TimeStampedModel):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super(Bookmarks, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
