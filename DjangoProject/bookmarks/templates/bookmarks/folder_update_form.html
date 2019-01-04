@@ -15,7 +15,12 @@
                     {% endblock %}
                     <div class="name">Name:</div>
                     <input type="text" form="form1" name="name" value="{{form.name.value}}">
-                    <input type="submit" form="form1" value="Save">
+                    <div style="display: flex; flex: auto; justify-content: space-between;">
+                        <input type="submit" form="form1" value="Save">
+                        <a href="{% url 'bookmarks:folder-delete' pk=object.id %}" style="text-align: center">
+                        <button>Delete</button>
+                        </a>
+                    </div>
                 </div>
             </div>
     </div>

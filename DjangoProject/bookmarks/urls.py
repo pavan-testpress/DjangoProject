@@ -10,6 +10,7 @@ urlpatterns = [
     path('folders/create/', views.FolderCreateView.as_view(), name="create-folder"),
     path('folders/<slug>/', views.BookmarksListView.as_view(), name="folder-bookmarks"),
     path('folders/<slug>/edit/', views.FolderUpdateView.as_view(), name="folder-edit"),
+    path('folders/<pk>/delete/', views.FolderDeleteView.as_view(), name="folder-delete"),
     path('folders/<slug>/create/', views.BookmarkCreateView.as_view(), name="create-bookmark"),
     path('folders/<slug>/<pk>/edit/', views.BookmarkUpdateView.as_view(), name="bookmark-edit"),
 ]

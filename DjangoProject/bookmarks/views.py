@@ -102,10 +102,10 @@ class BookmarkCreateView(CreateView):
 
     def form_valid(self, form):
         folder = Folder.objects.get(slug=self.kwargs['slug'], created_by=self.request.user)
-        if Bookmark.objects.filter(name__iexact=form.cleaned_data['name']
-                                   , url__iexact=form.cleaned_data['url']
-                                   , created_by=self.request.user
-                                   , folder=folder).exists():
+        if Bookmark.objects.filter(name__iexact=form.cleaned_data['name'],
+                                   url__iexact=form.cleaned_data['url'],
+                                   created_by=self.request.user,
+                                   folder=folder).exists():
             error = form.cleaned_data['name'] + " with " + form.cleaned_data['url'] + " already exists.."
             return render(self.request, 'bookmarks/invalid_bookmark_form.html', {'error': error})
         else:
@@ -124,8 +124,10 @@ class FolderUpdateView(UpdateView):
 
     def form_valid(self, form):
         if Folder.objects.filter(name__iexact=form.cleaned_data['name'], created_by=self.request.user).exists():
+            f = Folder.objects.filter(name__iexact=form.cleaned_data['name'], created_by=self.request.user).first()
             error = form.cleaned_data['name'] + " already exists.."
-            return render(self.request, 'bookmarks/invalid_folder_form.html', {'error': error})
+            return render(self.request, 'bookmarks/invalid_folder_update_form.html',
+                          context={'error': error, 'object': f, 'form': form})
         else:
             return super(FolderUpdateView, self).form_valid(form)
 
@@ -140,10 +142,10 @@ class BookmarkUpdateView(UpdateView):
         folder = Folder.objects.get(slug=self.kwargs['slug'], created_by=self.request.user)
         if (Bookmark.objects.filter(url__iexact=form.cleaned_data['url'],
                                     created_by=self.request.user,
-                                    folder=folder).exists())or(Bookmark.objects.filter(
-                                    name__iexact=form.cleaned_data['name'],
-                                    created_by=self.request.user,
-                                    folder=folder).exists()):
+                                    folder=folder).exists()) or (Bookmark.objects.filter(
+                                                                name__iexact=form.cleaned_data['name'],
+                                                                created_by=self.request.user,
+                                                                folder=folder).exists()):
             error = form.cleaned_data['name'] + " with " + form.cleaned_data['url'] + " already exists.."
             return render(self.request, 'bookmarks/invalid_update_bookmark.html', {'error': error, 'form': form})
         else:
@@ -153,26 +155,23 @@ class BookmarkUpdateView(UpdateView):
 @method_decorator(login_required, name="dispatch")
 class FolderDeleteView(DeleteView):
     model = Folder
-    template_name = 'bookmark/folder_delete_confirm.html'
+    template_name = 'bookmarks/folder_delete_confirm.html'
 
     def delete(self, request, *args, **kwargs):
-        object = self.get_object()
+        delete_folder = self.get_object()
         if Folder.objects.filter(name='UnCategorised', created_by=self.request.user).exists():
             f = Folder.objects.get(name="UnCategorised", created_by=self.request.user)
-            for bookmark in object.folder.all():
-                if f.folder.filter(url__iexact=bookmark.url,
-                                    created_by=self.request.user,
-                                    name=bookmark.name).exists()or(f.folder.filter(
-                                    name__iexact=bookmark.name,
-                                    created_by=self.request.user).exists()):
-                bookmark.folder = f
-                bookmark.save()
+            for bookmark in delete_folder.folder.all():
+                if (f.folder.filter(url__iexact=bookmark.url, created_by=self.request.user).exists())or\
+                        (f.folder.filter(name__iexact=bookmark.name, created_by=self.request.user).exists()):
+                    bookmark.delete()
+                else:
+                    bookmark.folder = f
+                    bookmark.save()
         else:
-            f = Folder.objects. create(name='UnCategorised', created_by=self.request.user)
-            for bookmark in object.folder.all():
+            f = Folder.objects.create(name='UnCategorised', created_by=self.request.user)
+            for bookmark in delete_folder.folder.all():
                 bookmark.folder = f
                 bookmark.save()
-
-        success_url = self.get_success_url()
-        self.object.delete()
-        return HttpResponseRedirect(success_url)
+        delete_folder.delete()
+        return HttpResponseRedirect(reverse('bookmarks:folders'))
