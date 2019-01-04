@@ -1,23 +1,18 @@
 {% extends 'bookmarks/base.html' %}
 {% load static %}
 {% block aside %}
-    <div class="title">sort by</div>
-    <a href="{% url 'bookmarks:folders' %}?sort=name">name</a>
-    <a href="{% url 'bookmarks:folders' %}?sort=-created">created</a>
-    <a href="{% url 'bookmarks:folders' %}?sort=-modified">modified</a>
+     <div class="title">sort by</div>
+     <a href="{{ request.path }}?sort=name">name</a>
+     <a href="{{ request.path }}?sort=-created">created</a>
+     <a href="{{ request.path }}?sort=-modified">modified</a>
 {% endblock %}
 
 {% block content %}
-    <div class="folders">
-        {% for folder in folders %}
-            <div class="folder">
-                <a href="{{ folder.slug }}">
-                    <i class="fas fa-folder"></i>
-                </a>
-                <div class="folder-content">
-                    <div class="name">{{folder.name}}</div>
-                    <div class="count">{{folder.folder.count}}</div>
-                </div>
+    <div class="bookmarks">
+        {% for bookmark in bookmarks %}
+            <div class="bookmark">
+                <div class="name">{{ bookmark.name }}</div>
+                <a href="{{ bookmark.url }}">{{ bookmark.url }}</a>
             </div>
         {% endfor %}
     </div>

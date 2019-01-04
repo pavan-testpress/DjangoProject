@@ -14,10 +14,9 @@
                 </div>
             </nav>
              <aside>
-                 <div class="title">sort by</div>
-                 <a href="{% url 'bookmarks:folders' %}?sort=name">name</a>
-                 <a href="{% url 'bookmarks:folders' %}?sort=-created">created</a>
-                 <a href="{% url 'bookmarks:folders' %}?sort=-modified">modified</a>
+                 {% block aside %}
+
+                 {% endblock %}
              </aside>
             <main>
                 {% block content %}

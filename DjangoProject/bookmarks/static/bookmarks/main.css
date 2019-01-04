@@ -1,5 +1,15 @@
-@import url('https://fonts.googleapis.com/css?family=Ubuntu:400,700');
-
+@font-face {
+    font-family: 'Ubuntu';
+    font-style: regular;
+    font-weight: 400;
+    src: local('Ubuntu regular'), local('Ubuntu regular'), url(Ubuntu-Regular.ttf) format('truetype');
+}
+@font-face {
+    font-family: 'Ubuntu';
+    font-style: bold;
+    font-weight: 700;
+    src: local('Ubuntu bold'), local('Ubuntu bold'), url(Ubuntu-Bold.ttf) format('truetype');
+}
 *{
 margin: 0;
 padding: 0;
@@ -137,3 +147,33 @@ main> .folders> .folder > a> i{
     color: black;
     font-size:10em;
 }
+main >.bookmarks >.bookmark{
+    background: #CECCCC;
+    margin: 0.6em;
+    padding: 0.6em;
+    transition-property: all;
+    transition-duration: 1s;
+}
+main >.bookmarks >.bookmark >.name{
+    margin: 0.3em;
+    color: black;
+    font-weight: bold;
+    text-transform: capitalize;
+    letter-spacing: 1px;
+}
+main >.bookmarks >.bookmark >a{
+    margin: 0.3em;
+    display: block;
+    text-decoration: none;
+}
+main >.bookmarks >.bookmark:hover{
+    background: #605F5E;
+    border-left: 10px solid red;
+    font-size: 1.3em;
+}
+main >.bookmarks >.bookmark:hover >.name,
+main >.bookmarks >.bookmark:hover >a{
+    font-size: 1.3em;
+    color: white;
+}
+

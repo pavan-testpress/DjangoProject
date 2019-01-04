@@ -33,4 +33,46 @@ class FolderListView(ListView):
                 return sort
             return sort
         else:
-            return 'name'
+            return None
+
+    def get_context_data(self):
+        data = super(FolderListView, self).get_context_data()
+        if 'sort' in self.request.GET:
+            sort = self.request.GET['sort']
+            if sort not in ['-modified', '-created', 'name']:
+                data['sort'] = 'name'
+            data['sort'] = sort
+        return data
+
+
+@method_decorator(login_required, name="dispatch")
+class BookmarksListView(ListView):
+    model = Folder
+    context_object_name = 'bookmarks'
+    template_name = 'bookmarks/bookmarks-list.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        if 'sort' in self.request.GET:
+            self.queryset = Folder.objects.get(created_by=self.request.user, slug=self.kwargs['slug']).folder
+            qs = super(BookmarksListView, self).get_queryset()
+        else:
+            qs = Folder.objects.get(created_by=self.request.user, slug=self.kwargs['slug']).folder.all()
+        return qs
+
+    def get_ordering(self):
+        if 'sort' in self.request.GET:
+            sort = self.request.GET['sort']
+            if sort not in ['-modified', '-created', 'name']:
+                return 'name'
+            return sort
+        return 'None'
+
+    def get_context_data(self):
+        data = super(BookmarksListView, self).get_context_data()
+        if 'sort' in self.request.GET:
+            sort = self.request.GET['sort']
+            if sort not in ['-modified', '-created', 'name']:
+                data['sort'] = 'name'
+            data['sort'] = sort
+        return data
