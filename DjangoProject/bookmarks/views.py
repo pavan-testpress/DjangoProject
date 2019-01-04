@@ -1,6 +1,6 @@
 from django.shortcuts import reverse, render
 from django.http import HttpResponseRedirect
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 
@@ -148,3 +148,31 @@ class BookmarkUpdateView(UpdateView):
             return render(self.request, 'bookmarks/invalid_update_bookmark.html', {'error': error, 'form': form})
         else:
             return super(BookmarkUpdateView, self).form_valid(form)
+
+
+@method_decorator(login_required, name="dispatch")
+class FolderDeleteView(DeleteView):
+    model = Folder
+    template_name = 'bookmark/folder_delete_confirm.html'
+
+    def delete(self, request, *args, **kwargs):
+        object = self.get_object()
+        if Folder.objects.filter(name='UnCategorised', created_by=self.request.user).exists():
+            f = Folder.objects.get(name="UnCategorised", created_by=self.request.user)
+            for bookmark in object.folder.all():
+                if f.folder.filter(url__iexact=bookmark.url,
+                                    created_by=self.request.user,
+                                    name=bookmark.name).exists()or(f.folder.filter(
+                                    name__iexact=bookmark.name,
+                                    created_by=self.request.user).exists()):
+                bookmark.folder = f
+                bookmark.save()
+        else:
+            f = Folder.objects. create(name='UnCategorised', created_by=self.request.user)
+            for bookmark in object.folder.all():
+                bookmark.folder = f
+                bookmark.save()
+
+        success_url = self.get_success_url()
+        self.object.delete()
+        return HttpResponseRedirect(success_url)
