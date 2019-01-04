@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'authenticationapp.apps.AuthenticationappConfig',
-    'bookmarksapp.apps.BookmarksappConfig',
+    'bookmarks.apps.BookmarksConfig',
     'bootstrap4',
     'crispy_forms',
     'django_filters',
@@ -130,3 +130,4 @@ STATICFILES_FINDERS = (
 
 AUTH_USER_MODEL = 'authenticationapp.MyUser'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+LOGIN_URL = '/login/'

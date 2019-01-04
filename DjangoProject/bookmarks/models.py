@@ -6,18 +6,18 @@ from model_utils.models import TimeStampedModel
 from authenticationapp.models import MyUser
 
 
-class Folders(TimeStampedModel):
+class Folder(TimeStampedModel):
     name = models.CharField(max_length=50)
     slug = models.SlugField()
     created_by = models.ForeignKey(MyUser, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
-        super(Folders, self).save(*args, **kwargs)
+        super(Folder, self).save(*args, **kwargs)
 
 
-class Bookmarks(TimeStampedModel):
-    folder = models.ForeignKey(Folders, on_delete=models.SET_NULL, related_name='folder', null=True)
+class Bookmark(TimeStampedModel):
+    folder = models.ForeignKey(Folder, on_delete=models.SET_NULL, related_name='folder', null=True)
     name = models.CharField(max_length=50)
     url = models.URLField(max_length=200)
     created_by = models.ForeignKey(MyUser, on_delete=models.CASCADE, null=True)
@@ -25,4 +25,4 @@ class Bookmarks(TimeStampedModel):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
-        super(Bookmarks, self).save(*args, **kwargs)
+        super(Bookmark, self).save(*args, **kwargs)

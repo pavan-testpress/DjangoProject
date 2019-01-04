@@ -1,0 +1,38 @@
+{% extends 'bookmarks/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="folders">
+        {% for folder in folders %}
+            <div class="folder">
+                <a href="{{ folder.slug }}">
+                    <i class="fas fa-folder"></i>
+                </a>
+                <div class="folder-content">
+                    <div class="name">{{folder.name}}</div>
+                    <div class="count">{{folder.folder.count}}</div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block footer %}
+<span>
+{% if is_paginated %}
+    <div class="pagination">
+        <span class="page-links">
+            {% if page_obj.has_previous %}
+                <a href="{% url 'bookmarks:folders' %}?page={{ page_obj.previous_page_number }}">Previous</a>
+            {% endif %}
+            <span class="page-current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+            {% if page_obj.has_next %}
+                <a href="{% url 'bookmarks:folders' %}?page={{ page_obj.next_page_number }}">Next</a>
+            {% endif %}
+        </span>
+    </div>
+{% endif %}
+</span>
+<span>Copyright &copy; 2019</span>
+{% endblock %}
