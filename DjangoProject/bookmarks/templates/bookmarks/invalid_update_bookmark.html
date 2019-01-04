@@ -1,0 +1,11 @@
+{% extends 'bookmarks/bookmark_update_form.html'%}
+{% block invalid %}
+    <div id="invalid" style="color:red">{{ error }}</div>
+    <script>
+        setTimeout(
+            function()
+            {
+                $('#invalid').fadeOut('fast');
+            }, 2000);
+    </script>
+{% endblock %}
