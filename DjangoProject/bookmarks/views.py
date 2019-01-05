@@ -5,6 +5,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 
 from .models import Folder, Bookmark
+from .filter import FolderFilter, BookmarkFilter
 
 
 def index(request):
@@ -23,7 +24,9 @@ class FolderListView(ListView):
 
     def get_queryset(self):
         qs = super().get_queryset()
-        return qs.filter(created_by=self.request.user)
+        qs = qs.filter(created_by=self.request.user)
+        folder_filter = FolderFilter(self.request.GET, queryset=qs)
+        return folder_filter.qs
 
     def get_ordering(self):
         if 'sort' in self.request.GET:
@@ -33,7 +36,7 @@ class FolderListView(ListView):
                 return sort
             return sort
         else:
-            return None
+            return 'name'
 
     def get_context_data(self):
         data = super(FolderListView, self).get_context_data()
@@ -42,23 +45,26 @@ class FolderListView(ListView):
             if sort not in ['-modified', '-created', 'name']:
                 data['sort'] = 'name'
             data['sort'] = sort
+        else:
+            data['sort'] = 'name'
+        if 'name' in self.request.GET:
+            data['name'] = self.request.GET['name']
         return data
 
 
 @method_decorator(login_required, name="dispatch")
 class BookmarksListView(ListView):
-    model = Folder
+    model = Bookmark
     context_object_name = 'bookmarks'
     template_name = 'bookmarks/bookmarks-list.html'
     paginate_by = 10
 
     def get_queryset(self):
-        if 'sort' in self.request.GET:
-            self.queryset = Folder.objects.get(created_by=self.request.user, slug=self.kwargs['slug']).folder
-            qs = super(BookmarksListView, self).get_queryset()
-        else:
-            qs = Folder.objects.get(created_by=self.request.user, slug=self.kwargs['slug']).folder.all()
-        return qs
+        qs = super(BookmarksListView, self).get_queryset()
+        folder = Folder.objects.get(created_by=self.request.user, slug=self.kwargs['slug'])
+        qs = qs.filter(created_by=self.request.user, folder=folder)
+        folder_filter = BookmarkFilter(self.request.GET, queryset=qs)
+        return folder_filter.qs
 
     def get_ordering(self):
         if 'sort' in self.request.GET:
@@ -66,7 +72,7 @@ class BookmarksListView(ListView):
             if sort not in ['-modified', '-created', 'name']:
                 return 'name'
             return sort
-        return 'None'
+        return 'name'
 
     def get_context_data(self):
         data = super(BookmarksListView, self).get_context_data()
@@ -75,6 +81,10 @@ class BookmarksListView(ListView):
             if sort not in ['-modified', '-created', 'name']:
                 data['sort'] = 'name'
             data['sort'] = sort
+        else:
+            data['sort'] = 'name'
+        if 'name' in self.request.GET:
+            data['name'] = self.request.GET['name']
         return data
 
 

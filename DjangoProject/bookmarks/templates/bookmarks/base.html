@@ -10,6 +10,19 @@
             <nav>
                 <a href="{% url 'authenticationapp:index' %}">all apps</a>
                 <a href="{% url 'bookmarks:index' %}">bookmark folders</a>
+                <form style="align-self: center;" method="GET" id="filter_form">
+                    {% if name != "" %}
+                    <input style="padding:0.5em" type="text" placeholder="Search" name="name" value="{{name}}">
+                    {% else %}
+                    <input style="padding:0.5em" type="text" placeholder="Search" name="name">
+                    {% endif %}
+                    <select style="padding:0.5em" name="sort">
+                        <option value="-created" {% if sort == "-created" %} selected {% endif %}>Sort by last created</option>
+                        <option value="-modified" {% if sort == "-modified" %} selected {% endif %} >Sort by last modified</option>
+                        <option value="name" {% if sort == "name" %} selected {% endif %} >Sort by name</option>
+                    </select>
+                    <input type="submit" style="padding:0.5em">
+                </form>
                 <div class="logout">
                     <a href="{% url 'authenticationapp:logout' %}">logout</a>
                 </div>
