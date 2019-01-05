@@ -53,7 +53,7 @@ class DeleteBookmarkTestCase(Exam, TestCase):
 
     def test_redirect_if_not_logged_in(self):
         """
-        Test if folder delete page without logged in the user
+        Test if bookmark delete page without logged in the user
         redirects to login or not.
         """
         self.client.get(reverse('authenticationapp:logout'))
