@@ -1,10 +1,10 @@
-{% extends "authenticationapp/base.html"%}
+{% extends "authentication/base.html"%}
 {% load crispy_forms_tags %}
 {% block container%}
     <div class="col-4">
         <h1 class="mt-2">Login</h1>
         <hr class="mt-0 mb-4">
-        <form action = "{% url 'authenticationapp:login' %}" method="POST" >
+        <form action = "{% url 'authentication:login' %}" method="POST" >
             {% csrf_token %}
             <p class="form-inline" ><label for="id_username">Username:</label> <input type="text" class="form-control" name="username" autofocus required id="id_username"></p>
             <p class="form-inline" ><label for="id_password">Password:</label> <input class="form-control" type="password" name="password" required id="id_password"></p>
