@@ -4,8 +4,8 @@
     <form method="Post" id="form1">
         {% csrf_token %}
     </form>
-    <div id="bookmarks">
-            <div id="bookmark" >
+    <div id="bookmarks" style="height: 90vh;justify-content: center;align-items: center;">
+            <div id="bookmark" style="display: grid;height: 30vh;align-items: center;">
                 <h3>Edit Bookmark</h3>
                 <div>Name:
                     <input name="name" type="text" form="form1" value="{{ form.name.value }}">
@@ -13,7 +13,14 @@
                 <div>URL:
                     <input name="url" type="url" form="form1" value="{{ form.url.value }}">
                 </div>
+                <div style="display: flex; justify-content: space-between;">
                     <input type="submit" form="form1" value="Submit">
+                    <a href="{% url 'bookmarks:bookmark-delete' slug=object.folder.slug pk=object.id%}">
+                        <button>Delete</button>
+                    </a>
+                    <!--<input type="submit" value="Delete">-->
+                </div>
+
                     {% block invalid %}
 
                     {% endblock %}

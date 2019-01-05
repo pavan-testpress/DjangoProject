@@ -13,4 +13,5 @@ urlpatterns = [
     path('folders/<pk>/delete/', views.FolderDeleteView.as_view(), name="folder-delete"),
     path('folders/<slug>/create/', views.BookmarkCreateView.as_view(), name="create-bookmark"),
     path('folders/<slug>/<pk>/edit/', views.BookmarkUpdateView.as_view(), name="bookmark-edit"),
+    path('folders/<slug>/<pk>/delete/', views.BookmarkDeleteView.as_view(), name="bookmark-delete"),
 ]

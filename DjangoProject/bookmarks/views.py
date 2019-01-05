@@ -147,7 +147,8 @@ class BookmarkUpdateView(UpdateView):
                                                                 created_by=self.request.user,
                                                                 folder=folder).exists()):
             error = form.cleaned_data['name'] + " with " + form.cleaned_data['url'] + " already exists.."
-            return render(self.request, 'bookmarks/invalid_update_bookmark.html', {'error': error, 'form': form})
+            return render(self.request, 'bookmarks/invalid_update_bookmark.html',
+                          {'error': error, 'form': form, 'object': self.object})
         else:
             return super(BookmarkUpdateView, self).form_valid(form)
 
@@ -175,3 +176,12 @@ class FolderDeleteView(DeleteView):
                 bookmark.save()
         delete_folder.delete()
         return HttpResponseRedirect(reverse('bookmarks:folders'))
+
+
+@method_decorator(login_required, name="dispatch")
+class BookmarkDeleteView(DeleteView):
+    model = Bookmark
+    template_name = 'bookmarks/bookmark_delete_confirm.html'
+
+    def get_success_url(self):
+        return reverse('bookmarks:folder-bookmarks', kwargs={'slug': self.object.folder.slug})
