@@ -10,17 +10,17 @@ from .forms import UserCreationForm
 
 def index(request):
     if str(request.user) == 'AnonymousUser':
-        return HttpResponseRedirect(reverse('authenticationapp:login'))
+        return HttpResponseRedirect(reverse('authentication:login'))
     else:
-        return render(request, 'authenticationapp/index.html')
+        return render(request, 'authentication/index.html')
 
 
 def login(request):
     if request.user.is_authenticated:
-        return HttpResponseRedirect(reverse('authenticationapp:index'))
+        return HttpResponseRedirect(reverse('authentication:index'))
     else:
         if request.method == 'GET':
-            template = 'authenticationapp/login.html'
+            template = 'authentication/login.html'
             return render(request, template)
         if request.method == "POST":
             username = request.POST['username']
@@ -28,14 +28,14 @@ def login(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 mylogin(request, user)
-                return HttpResponseRedirect(reverse('authenticationapp:index'))
+                return HttpResponseRedirect(reverse('authentication:index'))
             else:
-                return render(request, "authenticationapp/invalidlogin.html")
+                return render(request, "authentication/invalidlogin.html")
 
 
 def signup(request):
     if request.user.is_authenticated:
-        return HttpResponseRedirect(reverse('authenticationapp:index'))
+        return HttpResponseRedirect(reverse('authentication:index'))
     else:
         if request.method == 'POST':
             form = UserCreationForm(request.POST)
@@ -45,12 +45,12 @@ def signup(request):
                 raw_password = form.cleaned_data.get('password1')
                 user = authenticate(request, username=username, password=raw_password)
                 mylogin(request, user)
-                return HttpResponseRedirect(reverse('authenticationapp:index'))
+                return HttpResponseRedirect(reverse('authentication:index'))
         else:
             form = UserCreationForm()
-        return render(request, 'authenticationapp/signup.html', {'form': form})
+        return render(request, 'authentication/signup.html', {'form': form})
 
 
 def logout(request):
     mylogout(request)
-    return HttpResponseRedirect(reverse('authenticationapp:login'))
+    return HttpResponseRedirect(reverse('authentication:login'))
