@@ -9,17 +9,4 @@ class UserCreationForm(UserCreationForm):
 
     class Meta:
         model = MyUser
-        fields = ("email", "password1", "password2")
-
-    def __init__(self, *args, **kwargs):
-        super(UserCreationForm, self).__init__(*args, **kwargs)
-
-        for fieldname in ['email', 'password1', 'password2']:
-            self.fields[fieldname].help_text = None
-
-    def save(self, commit=True):
-        user = super(UserCreationForm, self).save(commit=False)
-        user.username = self.cleaned_data["email"]
-        if commit:
-            user.save()
-        return user
+        fields = ("first_name", "last_name", "username", "email", "password1", "password2")
