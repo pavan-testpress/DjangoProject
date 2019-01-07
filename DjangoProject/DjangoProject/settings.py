@@ -123,3 +123,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'authentication.MyUser'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'pavan1995143.pavan@gmail.com'
+EMAIL_HOST_PASSWORD = 'mynameisking'
+EMAIL_PORT = 587
