@@ -54,7 +54,7 @@ class AuthenticationTestCase(TestCase):
         user = MyUser.objects.get(pk=response.context['user'].pk)
         self.assertEqual(user.is_active, False)
         activate = self.client.get(reverse('authentication:activate',
-                                kwargs={'uidb64': response.context['uid'], 'token': response.context['token']}))
+                                           kwargs={'uidb64': response.context['uid'], 'token': response.context['token']}))
         self.assertEqual(activate.status_code, 200)
         user = MyUser.objects.get(pk=response.context['user'].pk)
         self.assertEqual(user.is_active, True)
