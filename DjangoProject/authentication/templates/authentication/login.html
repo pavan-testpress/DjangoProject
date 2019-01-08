@@ -22,7 +22,7 @@
                 <p class="form-inline" ><label for="id_username">Username:</label> <input form="form" type="text" class="form-control" name="username" autofocus required id="id_username"></p>
                 <p class="form-inline" ><label for="id_password">Password:</label> <input form="form" class="form-control" type="password" name="password" required id="id_password"></p>
                 <button class="btn btn-outline-success my-2 my-sm-0"  form="form" type="submit">Login</button>
-                <a href="#"><button class="btn btn-outline-success my-2 my-sm-0">Forgot Password</button></a>
+                <a href="{% url 'authentication:forgot_password' %}"><button class="btn btn-outline-success my-2 my-sm-0">Forgot Password</button></a>
                 {% block invalid %}
 
                 {% endblock %}
